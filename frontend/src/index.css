@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset básico para garantir que o Tailwind assuma o controle */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* Removido o display: flex que centralizava tudo no meio da tela */
+}
+
+/* Opcional: Suavizar fontes */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
