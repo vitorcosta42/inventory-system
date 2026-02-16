@@ -1,5 +1,5 @@
 import React from "react";
-import ProductionList from "../components/ProductionList";
+import { ProductionList } from "../components";
 
 const ProductionPage: React.FC = () => {
   return (

@@ -3,6 +3,7 @@ import {
   useGetMaterialsQuery,
   useDeleteMaterialMutation,
 } from "../features/materials/materialsApi";
+import { DeleteIcon, EditIcon } from "./icons";
 
 interface Material {
   id: string;
@@ -39,69 +40,130 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
   }
 
   return (
-    <div className="overflow-x-auto bg-white rounded-b-xl">
-      <table className="min-w-full border-separate border-spacing-0">
-        <thead>
-          <tr className="bg-slate-50 border-b border-slate-200">
-            <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
-              ID
-            </th>
-            <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
-              Material
-            </th>
-            <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
-              Estoque
-            </th>
-            <th className="px-6 py-4 text-right text-xs font-bold uppercase text-slate-500">
-              Ações
-            </th>
-          </tr>
-        </thead>
-
-        <tbody className="divide-y divide-slate-100">
-          {materials.map((material) => (
-            <tr key={material.id} className="hover:bg-slate-50 transition-all">
-              <td className="px-6 py-4">#{String(material.id).slice(-4)}</td>
-
-              <td className="px-6 py-4 font-semibold">{material.name}</td>
-
-              <td className="px-6 py-4">{material.stock} unidades</td>
-
-              <td className="px-6 py-4 text-right flex justify-end gap-2">
-                {/* BOTÃO EDITAR */}
-                <button
-                  onClick={() => onEdit(material)}
-                  className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                  title="Editar"
-                >
-                  ✏️
-                </button>
-
-                {/* BOTÃO EXCLUIR */}
-                <button
-                  onClick={async () => {
-                    if (
-                      window.confirm(
-                        `Deseja realmente excluir ${material.name}?`,
-                      )
-                    ) {
-                      try {
-                        await deleteMaterial(material.id).unwrap();
-                      } catch (err) {
-                        console.error("Erro ao excluir:", err);
-                      }
-                    }
-                  }}
-                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                  title="Excluir"
-                >
-                  🗑️
-                </button>
-              </td>
+    <div className="w-full">
+      <div className="sm:flex max-md:hidden  bg-white rounded-b-xl overflow-x-auto">
+        <table className="min-w-full border-separate border-spacing-0">
+          <thead>
+            <tr className="bg-slate-50 border-b border-slate-200">
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
+                ID
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
+                Material
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
+                Estoque
+              </th>
+              <th className="px-6 py-4 text-right text-xs font-bold uppercase text-slate-500">
+                Ações
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100">
+            {materials.map((material) => (
+              <tr
+                key={material.id}
+                className="hover:bg-slate-50 transition-colors"
+              >
+                <td className="px-6 py-4 text-sm font-mono text-slate-400">
+                  #{String(material.id).slice(-4)}
+                </td>
+
+                <td className="px-6 py-4 font-semibold text-slate-800">
+                  {material.name}
+                </td>
+
+                <td className="px-6 py-4 text-sm text-slate-600">
+                  {material.stock} unidades
+                </td>
+
+                <td className="px-6 py-4 text-right flex justify-end gap-2">
+                  <button
+                    onClick={() => onEdit(material)}
+                    className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                    title="Editar"
+                  >
+                    <EditIcon size={20} />
+                  </button>
+
+                  <button
+                    onClick={async () => {
+                      if (
+                        window.confirm(
+                          `Deseja realmente excluir ${material.name}?`,
+                        )
+                      ) {
+                        try {
+                          await deleteMaterial(material.id).unwrap();
+                        } catch (err) {
+                          console.error("Erro ao excluir:", err);
+                        }
+                      }
+                    }}
+                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    title="Excluir"
+                  >
+                    <DeleteIcon size={20} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="sm:hidden space-y-4">
+        {materials.map((material) => (
+          <div
+            key={material.id}
+            className="bg-white rounded-xl shadow-sm border p-4 space-y-3"
+          >
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-mono text-slate-400">
+                #{String(material.id).slice(-4)}
+              </span>
+
+              <span
+                className={`text-sm font-semibold ${
+                  material.stock > 0 ? "text-emerald-600" : "text-rose-600"
+                }`}
+              >
+                {material.stock} un.
+              </span>
+            </div>
+
+            <h3 className="text-base font-semibold text-slate-900">
+              {material.name}
+            </h3>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => onEdit(material)}
+                className="flex-1 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-md transition-all"
+              >
+                Editar
+              </button>
+
+              <button
+                onClick={async () => {
+                  if (
+                    window.confirm(`Deseja realmente excluir ${material.name}?`)
+                  ) {
+                    try {
+                      await deleteMaterial(material.id).unwrap();
+                    } catch (err) {
+                      console.error("Erro ao excluir:", err);
+                    }
+                  }
+                }}
+                className="flex-1 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

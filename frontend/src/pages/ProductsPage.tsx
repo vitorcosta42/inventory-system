@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import ProductList from "../components/ProductList";
-import ProductForm from "../components/ProductForm";
+import { ProductForm, ProductList } from "../components";
 import type { Product } from "../features/products/productsApi";
 import {
   useGetProductsQuery,
@@ -27,14 +26,17 @@ const ProductsPage: React.FC = () => {
     }
   };
 
-  const handleEdit = (product: Product) => setEditingProduct(product);
+  const handleEdit = (product: Product) => {
+    setEditingProduct(product);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   const handleCancel = () => setEditingProduct(null);
 
   if (isLoading) return <p>Carregando produtos...</p>;
   if (isError) return <p>Erro ao carregar produtos!</p>;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-0 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-slate-900">

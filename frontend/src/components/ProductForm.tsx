@@ -214,7 +214,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
       setPrice("");
       setProductMaterials([]);
       setSelectedMaterial("");
-      setQuantity(1);
+      setQuantity(0);
 
       onCancel();
     } catch (err) {
@@ -224,7 +224,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md border mb-8">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border mb-8 max-w-3xl mx-auto">
       <h2 className="text-xl font-bold mb-4">
         {product ? "Editar Produto" : "Novo Produto"}
       </h2>
@@ -253,16 +253,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             className="w-full px-4 py-2 border rounded-md"
           />
         </div>
-
         <div className="border p-4 rounded-md">
           <h3 className="font-semibold mb-3">Matérias-Primas</h3>
-          <div className="flex gap-3 mb-3">
+          <div className="flex max-sm:flex-col sm:flex-row gap-3 mb-3">
             <select
               value={selectedMaterial ?? ""}
               onChange={(e) =>
                 setSelectedMaterial(e.target.value ? e.target.value : null)
               }
-              className="flex-1 px-3 py-2 border rounded-md"
+              className="flex-1 px-3 py-2 border rounded-md max-sm:w-full"
             >
               <option value="">Selecione</option>
               {isLoading ? (
@@ -288,60 +287,62 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                 setQuantity(val);
               }}
               disabled={!selectedMaterial}
-              className="w-24 px-3 py-2 border rounded-md  disabled:cursor-not-allowed"
+              className="w-full sm:w-24 px-3 py-2 border rounded-md disabled:cursor-not-allowed"
             />
 
             <button
               type="button"
               onClick={handleAddMaterial}
-              className="bg-blue-600 text-white px-4 rounded-md"
               disabled={!selectedMaterial}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               {editingMaterialId ? "Atualizar" : "Adicionar"}
             </button>
           </div>
+          <ul className="space-y-2">
+            {productMaterials.map((pm, index) => {
+              const mat = materials.find((m) => m.id === pm.material?.id);
+              return (
+                <li
+                  key={`${pm.material?.id}-${index}`}
+                  className="flex max-sm:flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-slate-50 px-3 py-2 rounded"
+                >
+                  <div>
+                    <span className="font-semibold">Material:</span> {mat?.name}{" "}
+                    | <span className="font-semibold">Quantidade:</span>{" "}
+                    {pm.quantity}
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleEditMaterial(pm)}
+                      className="text-blue-600"
+                    >
+                      Editar
+                    </button>
 
-          {productMaterials.map((pm, index) => {
-            const mat = materials.find((m) => m.id === pm.material?.id);
-            return (
-              <li
-                key={`${pm.material?.id}-${index}`}
-                className="flex justify-between items-center bg-slate-50 px-3 py-2 rounded"
-              >
-                <div>
-                  <span className="font-semibold">Material:</span> {mat?.name} |{" "}
-                  <span className="font-semibold">Quantidade:</span>{" "}
-                  {pm.quantity}
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => handleEditMaterial(pm)}
-                    className="text-blue-600"
-                  >
-                    Editar
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveMaterial(pm.material.id)}
-                    className="text-red-500"
-                  >
-                    Remover
-                  </button>
-                </div>
-              </li>
-            );
-          })}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveMaterial(pm.material.id)}
+                      className="text-red-500"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex max-sm:flex-col sm:flex-row gap-3">
           <button
             type="submit"
             disabled={productMaterials.length === 0}
             className="bg-green-600 text-white px-6 py-2 rounded-md 
-           disabled:bg-gray-400 
-           disabled:cursor-not-allowed"
+          disabled:bg-gray-400 
+          disabled:cursor-not-allowed 
+          max-sm:w-full sm:w-auto"
           >
             Salvar
           </button>
@@ -349,7 +350,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-gray-200 px-6 py-2 rounded-md"
+            className="bg-gray-200 px-6 py-2 rounded-md max-sm:w-full sm:w-auto"
           >
             Cancelar
           </button>
