@@ -13,6 +13,15 @@ interface ProductionResult {
 
 const ProductionList: React.FC = () => {
   const { data: products = [] } = useGetProductsQuery();
+  const uniqueProducts = Object.values(
+    products.reduce((acc: Record<string, Product>, product: Product) => {
+      if (!acc[product.name]) {
+        acc[product.name] = product;
+      }
+      return acc;
+    }, {}),
+  );
+
   const { data: materials = [] } = useGetMaterialsQuery();
 
   const calculateProduction = (product: Product): ProductionResult => {
@@ -46,7 +55,7 @@ const ProductionList: React.FC = () => {
     <div className="bg-white p-6 rounded-lg shadow-md border">
       <h2 className="text-xl font-bold mb-6">Produção Possível</h2>
 
-      {products.map((product: Product) => {
+      {uniqueProducts.map((product: Product) => {
         const { max, limitingMaterial } = calculateProduction(product);
 
         return (

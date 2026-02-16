@@ -4,11 +4,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
+import jakarta.transaction.Transactional;
+
+
 import org.acme.entity.Material;
 import org.acme.repository.MaterialRepository;
- import jakarta.transaction.Transactional;
  
-import java.util.List;
 
 @Path("/api/materials")
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,9 +24,8 @@ public class MaterialResource {
     public static class MaterialInput {
         private String name;
         private int stock;
-public MaterialInput() { 
+    public MaterialInput() { 
     }
-
         public String getName() { return name; }
         public void setName(String name) { this.name = name; }
 
@@ -36,8 +37,6 @@ public MaterialInput() {
     public List<Material> getAll() {
         return repository.listAll();
     }
-
- // Importe este
 
 @POST
 @Transactional 

@@ -1,4 +1,4 @@
-package main.java.org.acme.config;
+package org.acme.config;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;

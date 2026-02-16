@@ -10,7 +10,9 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
   const [deleteProduct] = useDeleteProductMutation();
 
-  if (products.length === 0)
+  const sortedProducts = [...products].sort((a, b) => b.price - a.price);
+
+  if (sortedProducts.length === 0)
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4">
         <div className="bg-slate-100 rounded-full p-4 mb-4">
@@ -45,7 +47,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
           </tr>
         </thead>
         <tbody className="bg-white">
-          {products.map((product) => (
+          {sortedProducts.map((product) => (
             <tr
               key={product.id}
               className="group hover:bg-slate-50/80 transition-colors"

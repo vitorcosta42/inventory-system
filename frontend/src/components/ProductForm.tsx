@@ -10,6 +10,8 @@ import type {
 } from "../features/products/productsApi";
 import { useGetMaterialsQuery } from "../features/materials/materialsApi";
 
+import { toast } from "react-toastify";
+
 interface ProductFormProps {
   product: Product | null;
   onCancel: () => void;
@@ -28,39 +30,43 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
   const [updateProduct] = useUpdateProductMutation();
 
   const [name, setName] = useState(product?.name ?? "");
-  const [price, setPrice] = useState(product?.price ?? 0);
+  const [price, setPrice] = useState<string>(
+    product ? String(product.price) : "",
+  );
+
   const [productMaterials, setProductMaterials] = useState<ProductMaterial[]>(
     () => product?.materials ?? [],
   );
 
-  const [selectedMaterial, setSelectedMaterial] = useState<number | null>(null);
-
-  const [editingMaterialId, setEditingMaterialId] = useState<number | null>(
+  const [selectedMaterial, setSelectedMaterial] = useState<string | null>(null);
+  const [editingMaterialId, setEditingMaterialId] = useState<string | null>(
     null,
   );
 
-  const [quantity, setQuantity] = useState(1);
-  const selectedMatObj = materials.find((m) => m.id === selectedMaterial);
+  const [quantity, setQuantity] = useState(0);
+  const selectedMatObj = materials.find(
+    (m) => String(m.id) === selectedMaterial,
+  );
 
   const maxQuantity = selectedMatObj ? selectedMatObj.stock : undefined;
 
   useEffect(() => {
     if (product) {
       setName(product.name);
-      setPrice(product.price);
+      setPrice(String(product.price));
       setProductMaterials(product.materials);
     } else {
       setName("");
-      setPrice(0);
+      setPrice("");
       setProductMaterials([]);
     }
   }, [product]);
 
   const handleAddMaterial = () => {
-    if (selectedMaterial === null || quantity <= 0) return;
+    if (!selectedMaterial || quantity <= 0 || !selectedMatObj) return;
 
     const existingIndex = productMaterials.findIndex(
-      (m) => m.material.id === selectedMaterial,
+      (m) => String(m.material.id) === String(selectedMaterial),
     );
 
     if (existingIndex !== -1) {
@@ -75,71 +81,144 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
         ...productMaterials,
         {
           quantity,
-          material: { id: selectedMaterial },
+          material: selectedMatObj,
         },
       ]);
     }
 
-    // reset edição
     setEditingMaterialId(null);
     setSelectedMaterial(null);
-    setQuantity(1);
+    setQuantity(0);
+  };
+
+  const handleCancel = () => {
+    setName("");
+    setPrice("");
+    setProductMaterials([]);
+    setSelectedMaterial("");
+    setQuantity(0);
+
+    setEditingMaterialId(null);
+    setQuantity(0);
+
+    onCancel();
   };
 
   const handleEditMaterial = (pm: ProductMaterial) => {
-    setSelectedMaterial(pm.material.id);
+    setSelectedMaterial(String(pm.material.id));
     setQuantity(pm.quantity);
-    setEditingMaterialId(pm.material.id);
+    setEditingMaterialId(String(pm.material.id));
   };
 
-  /*************  ✨ Windsurf Command ⭐  *************/
-  /**
-   * Remove a material from the product materials list
-   * @param materialId The id of the material to remove
-   */
-  /*******  e2c16eea-6bbc-43bf-b2a3-6a1f4ee15fed  *******/
-  const handleRemoveMaterial = (materialId: number) => {
+  const handleRemoveMaterial = (materialId: string) => {
     setProductMaterials(
-      productMaterials.filter((m) => m.material.id !== materialId),
+      productMaterials.filter(
+        (m) => String(m.material?.id) !== String(materialId),
+      ),
     );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const nameExists = allProducts.some(
+    const baseProductWithSameName = allProducts.find(
       (p) =>
         p.name.toLowerCase() === name.toLowerCase() && p.id !== product?.id,
     );
 
-    if (nameExists) {
-      alert("Já existe um produto com este nome!");
-      return;
+    if (baseProductWithSameName) {
+      const baseMaterials = baseProductWithSameName.materials;
+
+      const errors: string[] = [];
+
+      const extraMaterials = productMaterials.filter(
+        (pm) =>
+          !baseMaterials.some(
+            (bm) => String(bm.material.id) === String(pm.material.id),
+          ),
+      );
+
+      if (extraMaterials.length > 0) {
+        errors.push(
+          `Materiais não permitidos: ${extraMaterials
+            .map((m) => m.material.name)
+            .join(", ")}`,
+        );
+      }
+
+      const missingMaterials = baseMaterials.filter(
+        (bm) =>
+          !productMaterials.some(
+            (pm) => String(pm.material.id) === String(bm.material.id),
+          ),
+      );
+
+      if (missingMaterials.length > 0) {
+        errors.push(
+          `Materiais obrigatórios ausentes: ${missingMaterials
+            .map((m) => m.material.name)
+            .join(", ")}`,
+        );
+      }
+
+      const wrongQuantities = productMaterials.filter((pm) => {
+        const base = baseMaterials.find(
+          (bm) => String(bm.material.id) === String(pm.material.id),
+        );
+
+        return base && base.quantity !== pm.quantity;
+      });
+
+      if (wrongQuantities.length > 0) {
+        errors.push(
+          `Quantidade incorreta para: ${wrongQuantities
+            .map((m) => {
+              const base = baseMaterials.find(
+                (bm) => String(bm.material.id) === String(m.material.id),
+              );
+              return `${m.material.name} (correto: ${base?.quantity})`;
+            })
+            .join(", ")}`,
+        );
+      }
+
+      if (errors.length > 0) {
+        errors.forEach((error) => {
+          toast.error(error, {
+            position: "top-right",
+            autoClose: 4000,
+          });
+        });
+        return;
+      }
     }
 
     const newProduct: Omit<Product, "id"> & Partial<Product> = {
       name,
-      price,
+      price: Number(price),
       materials: productMaterials,
     };
 
     try {
       if (product) {
         await updateProduct({ id: product.id, ...newProduct }).unwrap();
+        toast.success("Produto atualizado com sucesso!");
       } else {
         await addProduct(newProduct).unwrap();
+        toast.success("Produto cadastrado com sucesso!");
       }
 
       await refetchMaterials();
 
       setName("");
-      setPrice(0);
+      setPrice("");
       setProductMaterials([]);
       setSelectedMaterial("");
       setQuantity(1);
 
       onCancel();
     } catch (err) {
+      toast.error("Erro ao salvar produto. Verifique os dados.");
       console.error("Erro ao salvar produto:", err);
     }
   };
@@ -149,9 +228,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
       <h2 className="text-xl font-bold mb-4">
         {product ? "Editar Produto" : "Novo Produto"}
       </h2>
-
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Nome */}
         <div>
           <label className="block text-sm font-medium mb-1">
             Nome do Produto
@@ -165,17 +242,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             className="w-full px-4 py-2 border rounded-md"
           />
         </div>
-
-        {/* Preço */}
         <div>
           <label className="block text-sm font-medium mb-1">Preço</label>
           <input
             type="number"
             value={price}
-            min={0}
-            step={0.01}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            placeholder="Preço do produto "
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="Preço do produto"
             required
             className="w-full px-4 py-2 border rounded-md"
           />
@@ -187,10 +260,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             <select
               value={selectedMaterial ?? ""}
               onChange={(e) =>
-                setSelectedMaterial(
-                  e.target.value ? Number(e.target.value) : null,
-                )
+                setSelectedMaterial(e.target.value ? e.target.value : null)
               }
+              className="flex-1 px-3 py-2 border rounded-md"
             >
               <option value="">Selecione</option>
               {isLoading ? (
@@ -206,7 +278,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
 
             <input
               type="number"
-              min={1}
+              min={0}
               max={maxQuantity}
               value={quantity}
               onChange={(e) => {
@@ -216,7 +288,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                 setQuantity(val);
               }}
               disabled={!selectedMaterial}
-              className="w-24 px-3 py-2 border rounded-md"
+              className="w-24 px-3 py-2 border rounded-md  disabled:cursor-not-allowed"
             />
 
             <button
@@ -225,16 +297,15 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
               className="bg-blue-600 text-white px-4 rounded-md"
               disabled={!selectedMaterial}
             >
-              Adicionar
+              {editingMaterialId ? "Atualizar" : "Adicionar"}
             </button>
           </div>
 
-          {productMaterials.map((pm) => {
-            const mat = materials.find((m) => m.id === pm.material.id);
-
+          {productMaterials.map((pm, index) => {
+            const mat = materials.find((m) => m.id === pm.material?.id);
             return (
               <li
-                key={pm.material?.id}
+                key={`${pm.material?.id}-${index}`}
                 className="flex justify-between items-center bg-slate-50 px-3 py-2 rounded"
               >
                 <div>
@@ -267,13 +338,17 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
         <div className="flex gap-3">
           <button
             type="submit"
-            className="bg-green-600 text-white px-6 py-2 rounded-md"
+            disabled={productMaterials.length === 0}
+            className="bg-green-600 text-white px-6 py-2 rounded-md 
+           disabled:bg-gray-400 
+           disabled:cursor-not-allowed"
           >
             Salvar
           </button>
+
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleCancel}
             className="bg-gray-200 px-6 py-2 rounded-md"
           >
             Cancelar
