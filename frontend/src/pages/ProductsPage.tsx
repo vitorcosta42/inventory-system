@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductForm, ProductList } from "../components";
 import type { Product } from "../features/products/productsApi";
 import {
@@ -6,13 +6,36 @@ import {
   useAddProductMutation,
   useUpdateProductMutation,
 } from "../features/products/productsApi";
+import { useLocation } from "react-router-dom";
+
+interface LocationState {
+  product?: Product;
+}
 
 const ProductsPage: React.FC = () => {
   const { data: products = [], isLoading, isError } = useGetProductsQuery();
   const [addProduct] = useAddProductMutation();
   const [updateProduct] = useUpdateProductMutation();
+  const location = useLocation();
+  const productFromState = (location.state as LocationState)?.product ?? null;
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [productionProduct, setProductionProduct] = useState<Omit<
+    Product,
+    "id"
+  > | null>(null);
+
+  useEffect(() => {
+    if (productFromState) {
+      setProductionProduct({
+        name: productFromState.name,
+        price: productFromState.price,
+        materials: productFromState.materials,
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [productFromState]);
+
   const handleSave = async (product: Product | Omit<Product, "id">) => {
     try {
       if ("id" in product && editingProduct) {
@@ -21,6 +44,7 @@ const ProductsPage: React.FC = () => {
         await addProduct(product as Omit<Product, "id">).unwrap();
       }
       setEditingProduct(null);
+      setProductionProduct(null);
     } catch (error) {
       console.error("Erro ao salvar produto 1:", error);
     }
@@ -30,8 +54,10 @@ const ProductsPage: React.FC = () => {
     setEditingProduct(product);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const handleCancel = () => setEditingProduct(null);
-
+  const handleCancel = () => {
+    setEditingProduct(null);
+    setProductionProduct(null);
+  };
   if (isLoading) return <p>Carregando produtos...</p>;
   if (isError) return <p>Erro ao carregar produtos!</p>;
 
@@ -48,7 +74,9 @@ const ProductsPage: React.FC = () => {
           <section className="bg-white rounded-2xl shadow-sm border">
             <div className="p-6">
               <ProductForm
-                product={editingProduct}
+                product={
+                  editingProduct || (productionProduct as Product | null)
+                }
                 onCancel={handleCancel}
                 onSave={handleSave}
               />

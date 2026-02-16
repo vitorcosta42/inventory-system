@@ -6,12 +6,20 @@ import type {
   ProductMaterial,
 } from "../features/products/productsApi";
 import type { Material } from "../features/materials/types";
+import { useNavigate } from "react-router-dom";
+import { ArrowRightIcon } from "./icons";
 interface ProductionResult {
   max: number;
   limitingMaterial: Material | null;
 }
 
 const ProductionList: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleCreateProduct = (product: Product) => {
+    navigate("/products", { state: { product } });
+  };
+
   const { data: products = [] } = useGetProductsQuery();
   const uniqueProducts = Object.values(
     products.reduce((acc: Record<string, Product>, product: Product) => {
@@ -63,7 +71,16 @@ const ProductionList: React.FC = () => {
             key={product.id}
             className="mb-6 border rounded-md p-4 bg-slate-50"
           >
-            <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+            <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
+              {product.name}
+              <button
+                onClick={() => handleCreateProduct(product)}
+                className="text-blue-500 hover:text-blue-700 font-bold"
+                title="Criar produto"
+              >
+                <ArrowRightIcon size={24} />
+              </button>
+            </h3>
 
             <p className="mb-3">
               <span className="font-semibold">Produção máxima:</span>{" "}
