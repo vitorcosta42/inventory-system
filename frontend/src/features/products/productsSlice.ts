@@ -25,12 +25,10 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    // ➕ Criar
     addProduct(state, action: PayloadAction<Product>) {
       state.items.push(action.payload);
     },
 
-    // ✏ Atualizar
     updateProduct(state, action: PayloadAction<Product>) {
       const index = state.items.findIndex((p) => p.id === action.payload.id);
 
@@ -39,17 +37,14 @@ export const productsSlice = createSlice({
       }
     },
 
-    // ❌ Remover
     removeProduct(state, action: PayloadAction<string>) {
       state.items = state.items.filter((p) => p.id !== action.payload);
     },
 
-    // 🔄 Substituir todos (útil para API futuramente)
     setProducts(state, action: PayloadAction<Product[]>) {
       state.items = action.payload;
     },
 
-    // 🧹 Resetar estado (opcional)
     clearProducts(state) {
       state.items = [];
     },

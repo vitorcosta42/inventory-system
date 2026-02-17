@@ -90,6 +90,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({ material, onCancel }) => {
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Madeira"
               required
+              data-cy="input-material-name"
               className="w-full px-4 py-2 border border-gray-300 rounded-md 
                  focus:outline-none focus:ring-2 focus:ring-blue-500 
                  focus:border-blue-500 transition"
@@ -110,6 +111,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({ material, onCancel }) => {
               }}
               placeholder="Ex: 100"
               required
+              data-cy="input-material-stock"
               className="w-full px-4 py-2 border border-gray-300 rounded-md 
                  focus:outline-none focus:ring-2 focus:ring-blue-500 
                  focus:border-blue-500 transition"
@@ -120,6 +122,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({ material, onCancel }) => {
         <div className="flex items-end gap-2">
           <button
             type="submit"
+            data-cy="btn-save-material"
             className={`px-6 py-2 rounded-md font-semibold text-white ${
               material ? "bg-amber-500" : "bg-blue-600"
             }`}

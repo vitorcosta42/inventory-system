@@ -290,7 +290,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                 setQuantity(val);
               }}
               disabled={!selectedMaterial}
-              data-cy="input-quantity"
+              data-cy="input-material-quantity"
               className="w-full sm:w-24 px-3 py-2 border rounded-md disabled:cursor-not-allowed"
             />
 
@@ -298,6 +298,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
               type="button"
               onClick={handleAddMaterial}
               disabled={!selectedMaterial}
+              data-cy="btn-add-material"
               className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               {editingMaterialId ? "Atualizar" : "Adicionar"}

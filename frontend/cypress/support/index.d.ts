@@ -1,19 +1,17 @@
 /// <reference types="cypress" />
 
-declare namespace Cypress {
-  interface Chainable {
-    /**
-     * Preenche o formulário de produto
-     */
-    fillProductForm(
-      name: string,
-      price: string,
-      materials?: { name: string; quantity: number }[],
-    ): Chainable<void>;
-
-    /**
-     * Mocka a API de produtos e materiais
-     */
-    mockApi(): Chainable<void>;
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      fillProductForm(
+        name: string,
+        price: string,
+        materials?: { name: string; quantity: number; id: string }[],
+      ): Chainable<void>;
+      fillMaterialForm(name: string, quantity: string): Chainable<void>;
+      mockApi(): Chainable<void>;
+    }
   }
 }
+
+export {};

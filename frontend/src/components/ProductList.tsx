@@ -73,6 +73,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
                   <button
                     onClick={() => onEdit(product)}
                     className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-all"
+                    data-cy="btn-edit-product"
                   >
                     Editar
                   </button>

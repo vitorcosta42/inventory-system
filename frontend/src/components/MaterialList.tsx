@@ -82,6 +82,7 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
                   <button
                     onClick={() => onEdit(material)}
                     className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                    data-cy="btn-edit-material"
                     title="Editar"
                   >
                     <EditIcon size={20} />

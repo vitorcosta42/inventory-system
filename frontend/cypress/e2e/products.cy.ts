@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProductForm E2E", () => {
+describe("Products E2E", () => {
   beforeEach(() => {
     cy.mockApi();
     cy.visit("/products");
@@ -8,14 +8,13 @@ describe("ProductForm E2E", () => {
     cy.wait("@getProducts");
   });
   it("Deve criar um novo produto", () => {
-    cy.fillProductForm("Produto Teste", "100", [
-      { name: "Material", quantity: 2 },
-      { name: "Parafuso", quantity: 1 },
+    cy.fillProductForm("Mesa", "100", [
+      { name: "Madeira", id: "1", quantity: 2 },
     ]);
 
     cy.contains("Produto cadastrado com sucesso!").should("exist");
-
-    cy.contains("Produto Teste").should("exist");
+    cy.wait("@getProducts");
+    cy.contains("Mesa").should("exist");
   });
 
   it("Não deve salvar produto sem materiais", () => {
@@ -24,17 +23,15 @@ describe("ProductForm E2E", () => {
     cy.get('[data-cy="btn-save-product"]').should("be.disabled");
   });
 
-  it("Deve editar material existente antes de salvar", () => {
-    cy.fillProductForm("Produto Edit", "200", [
-      { name: "Madeira", quantity: 2 },
+  it("Deve editar produto existente", () => {
+    cy.fillProductForm("Mesa", "200", [
+      { name: "Madeira", id: "1", quantity: 2 },
     ]);
+    cy.get('[data-cy="btn-edit-product"]').click();
 
-    cy.contains("Editar").click();
-    cy.get('input[type="number"]').clear().type("5");
-    cy.contains("Atualizar").click();
-
+    cy.get('[data-cy="input-product-price"]').clear().type("100");
     cy.get('[data-cy="btn-save-product"]').click();
 
-    cy.contains("Produto cadastrado com sucesso!").should("exist");
+    cy.contains("Produto atualizado com sucesso!").should("exist");
   });
 });
