@@ -224,7 +224,7 @@ npm run cypress:open
 
 * Frontend e backend podem ser rodados **simultaneamente via Docker** ou **separadamente para desenvolvimento local**.
 * Ajuste os endpoints conforme suas necessidades.
-* Ideal para estudo, prototipagem e projetos pessoais de inventário.
+* Projeto feito para um teste técnico.
 
 
 
