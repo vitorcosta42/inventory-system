@@ -1,155 +1,230 @@
-# Inventory System
+
+# StockFlow
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Quarkus](https://img.shields.io/badge/Quarkus-3.30.2-purple)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
 
-Sistema de inventário completo com **backend em Quarkus + PostgreSQL** e **frontend em Vite + Vue.js**, pronto para rodar via **Docker Compose**.
+Sistema de inventário completo com **backend em Quarkus + PostgreSQL** e **frontend em React + Redux**, pronto para rodar via **Docker Compose**.
 
 ---
 
 ## Tecnologias utilizadas
 
-- **Backend:** Quarkus, Java 17, Hibernate ORM
-- **Frontend:** Vue.js, Vite, Tailwind CSS
+- **Backend:** Quarkus, Java 17
+- **Frontend:** React, Redux, Tailwind CSS  
 - **Banco de dados:** PostgreSQL 15
-- **Docker & Docker Compose** para orquestração de containers
-- **Scripts auxiliares:** `wait-for-it.sh` para sincronizar backend com DB
+- **Docker & Docker Compose** para orquestração de containers  
+- **Scripts auxiliares:** `wait-for-it.sh` para sincronizar backend com o banco de dados  
 
 ---
 
 ## Pré-requisitos
 
-Antes de começar, você precisa ter instalado:
+Antes de começar, certifique-se de ter instalado:
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Docker](https://docs.docker.com/get-docker/)  
+- [Docker Compose](https://docs.docker.com/compose/install/)  
+- [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (para rodar localmente sem Docker)  
+- [Node.js & npm](https://nodejs.org/) (para rodar o frontend localmente)  
 
 ---
 
 ## Estrutura do projeto
 
+```
+
 inventory-system/
-├── backend/ # Backend Quarkus
-│ ├── src/
-│ ├── Dockerfile
-│ ├── pom.xml
-│ ├── wait-for-it.sh
-│ └── application.properties
-├── frontend/ # Frontend Vue.js
-│ ├── src/
-│ ├── Dockerfile
-│ └── package.json
+├── backend/          # Backend Quarkus
+│   ├── src/
+│   ├── Dockerfile
+│   ├── pom.xml
+│   ├── wait-for-it.sh
+├── frontend/         # Frontend React.js
+│   ├── src/
+│   ├── Dockerfile
+│   └── package.json
 └── docker-compose.yml # Orquestração de containers
+
+````
 
 ---
 
-## Build e execução
+## Como rodar
 
-### Build
+### 1. Com Docker Compose
 
-Para construir os containers e o backend:
+**Build dos containers:**
 
 ```bash
 docker-compose down -v
 docker-compose build
+````
+
+**Subir os containers:**
+
+```bash
+docker-compose up
 ```
 
-Start
+> O backend espera o PostgreSQL subir usando `wait-for-it.sh`.
 
-Para subir todos os containers:
+**Parar os containers:**
 
-docker-compose up
-
-O backend espera o PostgreSQL subir usando wait-for-it.sh.
-
-Stop
-
-Para parar os containers:
-
+```bash
 docker-compose down
+```
 
-Builds separados
+---
 
-Se quiser apenas rodar o backend localmente:
+### 2. Rodando separadamente
 
+**Backend local:**
+
+```bash
 cd backend
 mvn clean package -DskipTests -Dquarkus.package.type=uber-jar
-java -jar target/\*-runner.jar
+java -jar target/*-runner.jar
+```
 
-Se quiser apenas rodar o frontend localmente:
+**Frontend local:**
 
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
-Acessando a aplicação
+---
 
-Frontend: http://localhost:5173
+## Acessando a aplicação
 
-Backend (API): http://localhost:8080
+* **Frontend:** [http://localhost:5173](http://localhost:5173)
+* **Backend (API):** [http://localhost:8080](http://localhost:8080)
 
-Configurações importantes
+---
 
-As variáveis de ambiente do backend estão definidas no docker-compose.yml:
+## Configurações importantes
 
-QUARKUS_DATASOURCE_URL: jdbc:postgresql://db:5432/inventory
-QUARKUS_DATASOURCE_USERNAME: user
-QUARKUS_DATASOURCE_PASSWORD: password
+No `docker-compose.yml`, as variáveis do backend estão definidas assim:
 
-O db aqui é o nome do serviço do PostgreSQL no Docker Compose.
+```env
+QUARKUS_DATASOURCE_URL=jdbc:postgresql://db:5432/inventory
+QUARKUS_DATASOURCE_USERNAME=user
+QUARKUS_DATASOURCE_PASSWORD=password
+```
 
-Scripts úteis
+> `db` é o nome do serviço do PostgreSQL no Docker Compose.
 
-O backend utiliza o script wait-for-it.sh para garantir que o PostgreSQL esteja pronto antes de iniciar:
+O backend utiliza o script `wait-for-it.sh` para garantir que o PostgreSQL esteja pronto antes de iniciar:
 
+```bash
 ./wait-for-it.sh db:5432 -- java -jar app.jar
+```
 
-Observações
+---
 
-O banco é configurado para drop-and-create (apaga e cria tabelas a cada start).
+## Banco de dados
 
-CORS está habilitado para permitir requisições do frontend (http://localhost:5173).
+* O banco está configurado para **drop-and-create**, apagando e criando tabelas a cada start.
+* CORS habilitado para permitir requisições do frontend ([http://localhost:5173](http://localhost:5173)).
 
-Comandos Docker úteis
+---
 
-Listar containers ativos:
+## Comandos Docker úteis
 
+* **Listar containers ativos:**
+
+```bash
 docker ps
+```
 
-Listar todos os containers:
+* **Listar todos os containers:**
 
+```bash
 docker ps -a
+```
 
-Remover containers parados:
+* **Remover containers parados:**
 
+```bash
 docker rm $(docker ps -a -q)
+```
 
-Remover imagens antigas:
+* **Remover imagens antigas:**
 
+```bash
 docker rmi <image_id>
+```
 
-Endpoints da API (Exemplo)
+---
 
-Ajuste de acordo com as rotas do seu backend
+## Endpoints da API (exemplos)
 
-GET /products – Lista todos os produtos
+| Método | Endpoint       | Descrição               |
+| ------ | -------------- | ----------------------- |
+| GET    | /products      | Lista todos os produtos |
+| POST   | /products      | Cria um novo produto    |
+| PUT    | /products/{id} | Atualiza um produto     |
+| DELETE | /products/{id} | Remove um produto       |
 
-POST /products – Cria um novo produto
+**Exemplo de payload JSON para criar um produto:**
 
-PUT /products/{id} – Atualiza um produto
-
-DELETE /products/{id} – Remove um produto
-
-Exemplo de payload JSON para criar um produto:
-
+```json
 {
-"name": "Produto A",
-"price": 50.0,
-"quantity": 10
+  "name": "Produto A",
+  "price": 50.0,
+  "quantity": 10
 }
+```
 
-Autor
+## 🧪 Testes
 
-Vitor Costa
+### Backend (Quarkus)
+
+O backend possui testes unitários e de integração que podem ser executados com Maven.
+
+**Rodar todos os testes:**
+
+```bash
+cd backend
+mvn test
+````
+
+> Observação: Certifique-se de que o banco de dados de teste esteja configurado corretamente no `application.properties`.
+
+---
+
+### Frontend (React)
+
+O frontend utiliza **Vitest** para testes unitários e **Cypress** para testes end-to-end (E2E).
+
+**Rodar testes unitários com Vitest:**
+
+```bash
+cd frontend
+npm install
+npm run test
+```
+
+> Isso executará todos os testes unitários e exibirá o resultado no terminal.
+
+**Rodar testes E2E com Cypress:**
+
+```bash
+cd frontend
+npm run cypress:open
+```
+
+> Isso abrirá a interface interativa do Cypress, onde você pode executar testes manualmente ou todos de forma automatizada.
+
+
+## Observações
+
+* Frontend e backend podem ser rodados **simultaneamente via Docker** ou **separadamente para desenvolvimento local**.
+* Ajuste os endpoints conforme suas necessidades.
+* Ideal para estudo, prototipagem e projetos pessoais de inventário.
+
+
+
