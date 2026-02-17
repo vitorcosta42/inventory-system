@@ -224,8 +224,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
   };
 
   return (
-    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border mb-8 max-w-3xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 mb-8 max-w-3xl mx-auto">
+      <h2 className="text-xl font-bold mb-4 text-gray-800">
         {product ? "Editar Produto" : "Novo Produto"}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -239,8 +239,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             onChange={(e) => setName(e.target.value)}
             placeholder="Nome do produto"
             data-cy="input-product-name"
+            data-testid="input-product-name"
             required
-            className="w-full px-4 py-2 border rounded-md"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md "
           />
         </div>
         <div>
@@ -252,10 +253,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             placeholder="Preço do produto"
             required
             data-cy="input-product-price"
-            className="w-full px-4 py-2 border rounded-md"
+            data-testid="input-product-price"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
           />
         </div>
-        <div className="border p-4 rounded-md">
+        <div className="border p-4 border border-gray-300 rounded-md">
           <h3 className="font-semibold mb-3">Matérias-Primas</h3>
           <div className="flex max-sm:flex-col sm:flex-row gap-3 mb-3">
             <select
@@ -264,7 +266,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                 setSelectedMaterial(e.target.value ? e.target.value : null)
               }
               data-cy="select-material"
-              className="flex-1 px-3 py-2 border rounded-md max-sm:w-full"
+              data-testid="select-material"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md max-sm:w-full"
             >
               <option value="">Selecione</option>
               {isLoading ? (
@@ -291,7 +294,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
               }}
               disabled={!selectedMaterial}
               data-cy="input-material-quantity"
-              className="w-full sm:w-24 px-3 py-2 border rounded-md disabled:cursor-not-allowed"
+              data-testid="input-material-quantity"
+              className="w-full sm:w-24 px-3 py-2 border border-gray-300  rounded-md disabled:cursor-not-allowed"
             />
 
             <button
@@ -299,7 +303,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
               onClick={handleAddMaterial}
               disabled={!selectedMaterial}
               data-cy="btn-add-material"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto disabled:bg-gray-400 disabled:cursor-not-allowed"
+              data-testid="btn-add-material"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md w-full sm:w-auto disabled:bg-gray-400 disabled:cursor-not-allowed hover:cursor-pointer "
             >
               {editingMaterialId ? "Atualizar" : "Adicionar"}
             </button>
@@ -321,7 +326,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                     <button
                       type="button"
                       onClick={() => handleEditMaterial(pm)}
-                      className="text-blue-600"
+                      className="text-blue-600 hover:cursor-pointer"
                     >
                       Editar
                     </button>
@@ -329,7 +334,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                     <button
                       type="button"
                       onClick={() => handleRemoveMaterial(pm.material.id)}
-                      className="text-red-500"
+                      className="text-red-500 hover:cursor-pointer"
                     >
                       Remover
                     </button>
@@ -347,8 +352,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             className="bg-green-600 text-white px-6 py-2 rounded-md 
           disabled:bg-gray-400 
           disabled:cursor-not-allowed 
-          max-sm:w-full sm:w-auto"
+          max-sm:w-full sm:w-auto hover:cursor-pointer "
             data-cy="btn-save-product"
+            data-testid="btn-save-product"
           >
             Salvar
           </button>
@@ -356,7 +362,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-gray-200 px-6 py-2 rounded-md max-sm:w-full sm:w-auto"
+            className="bg-gray-200 px-6 py-2 rounded-md max-sm:w-full sm:w-auto hover:cursor-pointer "
           >
             Cancelar
           </button>

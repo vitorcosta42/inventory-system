@@ -81,7 +81,7 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
                 <td className="px-6 py-4 text-right flex justify-end gap-2">
                   <button
                     onClick={() => onEdit(material)}
-                    className="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:cursor-pointer hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                     data-cy="btn-edit-material"
                     title="Editar"
                   >
@@ -102,7 +102,7 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
                         }
                       }
                     }}
-                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors hover:cursor-pointer"
                     title="Excluir"
                   >
                     <DeleteIcon size={20} />
@@ -140,7 +140,7 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={() => onEdit(material)}
-                className="flex-1 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-md transition-all"
+                className="flex-1 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-md transition-all hover:cursor-pointer"
               >
                 Editar
               </button>
@@ -157,7 +157,7 @@ const MaterialList: React.FC<MaterialListProps> = ({ onEdit }) => {
                     }
                   }
                 }}
-                className="flex-1 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all"
+                className="flex-1 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all hover:cursor-pointer"
               >
                 Excluir
               </button>

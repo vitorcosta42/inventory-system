@@ -28,9 +28,9 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
     );
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <div className="sm:flex gap-6 max-md:hidden overflow-x-auto">
-        <table className="min-w-full border-separate border-spacing-0">
+        <table className="min-w-full border-separate border-spacing-0 p-1">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200">
               <th className="px-6 py-4 text-left text-xs font-bold uppercase text-slate-500">
@@ -48,7 +48,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
             </tr>
           </thead>
 
-          <tbody className="bg-white">
+          <tbody className="divide-y divide-slate-100">
             {sortedProducts.map((product) => (
               <tr
                 key={product.id}
@@ -72,7 +72,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
                 <td className="px-6 py-4 text-right text-sm font-medium flex gap-2 justify-end">
                   <button
                     onClick={() => onEdit(product)}
-                    className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-all"
+                    className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-all hover:cursor-pointer "
                     data-cy="btn-edit-product"
                   >
                     Editar
@@ -86,7 +86,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
                         deleteProduct(product.id);
                       }
                     }}
-                    className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all"
+                    className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all hover:cursor-pointer "
                   >
                     Excluir
                   </button>
@@ -122,7 +122,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
             <div className="flex gap-2 pt-2">
               <button
                 onClick={() => onEdit(product)}
-                className="flex-1 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-all"
+                className="flex-1 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition-all hover:cursor-pointer"
               >
                 Editar
               </button>
@@ -135,7 +135,7 @@ const ProductList: React.FC<ProductListProps> = ({ products, onEdit }) => {
                     deleteProduct(product.id);
                   }
                 }}
-                className="flex-1 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all"
+                className="flex-1 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md transition-all hover:cursor-pointer"
               >
                 Excluir
               </button>

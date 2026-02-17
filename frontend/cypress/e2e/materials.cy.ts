@@ -6,14 +6,14 @@ describe("Materials E2E", () => {
     cy.visit("/materials");
     cy.wait("@getMaterials");
   });
-  it("Deve criar um novo material", () => {
+  it("should create a new material", () => {
     cy.fillMaterialForm("Borracha", "100");
 
     cy.contains("Material cadastrado com sucesso!").should("exist");
     cy.contains("borracha").should("exist");
   });
 
-  it("Deve editar material existente", () => {
+  it("should edit an existing material", () => {
     cy.fillMaterialForm("Borracha", "100");
     cy.get('[data-cy="btn-edit-material"]').first().click();
     cy.get('[data-cy="input-material-stock"]').clear().type("200");

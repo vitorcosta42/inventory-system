@@ -7,7 +7,7 @@ describe("Products E2E", () => {
     cy.wait("@getMaterials");
     cy.wait("@getProducts");
   });
-  it("Deve criar um novo produto", () => {
+  it("should create a new product", () => {
     cy.fillProductForm("Mesa", "100", [
       { name: "Madeira", id: "1", quantity: 2 },
     ]);
@@ -17,13 +17,13 @@ describe("Products E2E", () => {
     cy.contains("Mesa").should("exist");
   });
 
-  it("Não deve salvar produto sem materiais", () => {
+  it("should not save product without materials", () => {
     cy.get('[data-cy="input-product-name"]').type("Produto Vazio");
     cy.get('[data-cy="input-product-price"]').type("100");
     cy.get('[data-cy="btn-save-product"]').should("be.disabled");
   });
 
-  it("Deve editar produto existente", () => {
+  it("should edit an existing product", () => {
     cy.fillProductForm("Mesa", "200", [
       { name: "Madeira", id: "1", quantity: 2 },
     ]);

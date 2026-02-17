@@ -19,7 +19,7 @@ describe("Production E2E", () => {
     cy.wait("@getProducts");
   });
 
-  it("Deve visualizar os produtos possíveis de produção", () => {
+  it("should display the products available for production", () => {
     cy.contains("Mesa").should("exist");
   });
 });

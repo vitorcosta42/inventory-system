@@ -63,16 +63,16 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 py-0 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto ">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-slate-900">
             Catálogo de Produtos
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-8">
-          <section className="bg-white rounded-2xl shadow-sm border">
-            <div className="p-6">
+        <div className="grid grid-cols-1 gap-8 ">
+          <section className="bg-white border border-gray-300  rounded-2xl shadow-sm border">
+            <div className="p-6 ">
               <ProductForm
                 product={
                   editingProduct || (productionProduct as Product | null)
@@ -83,7 +83,7 @@ const ProductsPage: React.FC = () => {
             </div>
           </section>
 
-          <section className="bg-white rounded-2xl shadow-sm border">
+          <section className="bg-white rounded-2xl shadow-sm border border-gray-300 ">
             <div className="overflow-x-auto">
               <ProductList products={products} onEdit={handleEdit} />
             </div>

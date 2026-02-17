@@ -29,7 +29,7 @@ function App() {
               </h1>
 
               <button
-                className="sm:hidden text-white"
+                className="sm:hidden text-white hover:cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <MenuIcon size={24} />

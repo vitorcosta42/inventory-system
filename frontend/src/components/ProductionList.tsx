@@ -75,7 +75,7 @@ const ProductionList: React.FC = () => {
               {product.name}
               <button
                 onClick={() => handleCreateProduct(product)}
-                className="text-blue-500 hover:text-blue-700 font-bold"
+                className="text-blue-500 hover:text-blue-700 font-bold hover:cursor-pointer "
                 title="Criar produto"
               >
                 <ArrowRightIcon size={24} />
