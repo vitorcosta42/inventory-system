@@ -20,28 +20,29 @@ function App() {
       />
 
       <div className="min-h-screen bg-slate-50">
-        <header className="bg-white shadow-sm border-b">
+        <header className="bg-[#0C0F3D] shadow-md">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
             <div className="flex items-center justify-between">
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-                <StockFlowIcon size={24} />
-                <span className="text-blue-600">StockFlow</span>
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <StockFlowIcon size={24} className="text-white" />
+                <span className="text-white">StockFlow</span>
               </h1>
 
               <button
-                className="sm:hidden text-slate-700 text-2xl"
+                className="sm:hidden text-white"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <MenuIcon size={24} />
               </button>
+
               <nav className="sm:flex gap-6 max-sm:hidden">
                 <NavLink
                   to="/products"
                   className={({ isActive }) =>
                     `font-medium transition ${
                       isActive
-                        ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                        : "text-slate-600 hover:text-blue-600"
+                        ? "text-white border-b-2 border-white pb-1"
+                        : "text-white/70 hover:text-white"
                     }`
                   }
                 >
@@ -53,8 +54,8 @@ function App() {
                   className={({ isActive }) =>
                     `font-medium transition ${
                       isActive
-                        ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                        : "text-slate-600 hover:text-blue-600"
+                        ? "text-white border-b-2 border-white pb-1"
+                        : "text-white/70 hover:text-white"
                     }`
                   }
                 >
@@ -66,8 +67,8 @@ function App() {
                   className={({ isActive }) =>
                     `font-medium transition ${
                       isActive
-                        ? "text-blue-600 border-b-2 border-blue-600 pb-1"
-                        : "text-slate-600 hover:text-blue-600"
+                        ? "text-white border-b-2 border-white pb-1"
+                        : "text-white/70 hover:text-white"
                     }`
                   }
                 >
@@ -83,7 +84,7 @@ function App() {
               <NavLink
                 to="/products"
                 onClick={() => setIsOpen(false)}
-                className="text-slate-600 hover:text-blue-600"
+                className="text-white/70 hover:text-white"
               >
                 Produtos
               </NavLink>
@@ -91,7 +92,7 @@ function App() {
               <NavLink
                 to="/materials"
                 onClick={() => setIsOpen(false)}
-                className="text-slate-600 hover:text-blue-600"
+                className="text-white/70 hover:text-white"
               >
                 Matérias-Primas
               </NavLink>
@@ -99,7 +100,7 @@ function App() {
               <NavLink
                 to="/production"
                 onClick={() => setIsOpen(false)}
-                className="text-slate-600 hover:text-blue-600"
+                className="text-white/70 hover:text-white"
               >
                 Produção
               </NavLink>

@@ -238,6 +238,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nome do produto"
+            data-cy="input-product-name"
             required
             className="w-full px-4 py-2 border rounded-md"
           />
@@ -250,6 +251,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Preço do produto"
             required
+            data-cy="input-product-price"
             className="w-full px-4 py-2 border rounded-md"
           />
         </div>
@@ -261,6 +263,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
               onChange={(e) =>
                 setSelectedMaterial(e.target.value ? e.target.value : null)
               }
+              data-cy="select-material"
               className="flex-1 px-3 py-2 border rounded-md max-sm:w-full"
             >
               <option value="">Selecione</option>
@@ -287,6 +290,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
                 setQuantity(val);
               }}
               disabled={!selectedMaterial}
+              data-cy="input-quantity"
               className="w-full sm:w-24 px-3 py-2 border rounded-md disabled:cursor-not-allowed"
             />
 
@@ -343,6 +347,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
           disabled:bg-gray-400 
           disabled:cursor-not-allowed 
           max-sm:w-full sm:w-auto"
+            data-cy="btn-save-product"
           >
             Salvar
           </button>
