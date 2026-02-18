@@ -62,8 +62,6 @@ const ProductionList: React.FC = () => {
       limitingMaterial: limiting?.material ?? null,
     };
   };
-
-  // ✅ Loading State
   if (loadingProducts || loadingMaterials) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-md border">
@@ -73,7 +71,6 @@ const ProductionList: React.FC = () => {
     );
   }
 
-  // ✅ Empty State
   if (uniqueProducts.length === 0) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-md border">
