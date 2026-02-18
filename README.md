@@ -47,10 +47,17 @@ inventory-system/
 └── docker-compose.yml # Orquestração de containers
 
 ```
+---
+## 🚀 Como rodar o projeto
+
+### 0. Clonar o repositório
+
+```bash
+git clone https://github.com/vitorcosta42/inventory-system.git
+cd inventory-system
+```
 
 ---
-
-## Como rodar
 
 ### 1. Com Docker Compose
 
