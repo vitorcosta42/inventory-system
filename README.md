@@ -180,16 +180,11 @@ docker rmi <image_id>
 | POST   | /products      | Cria um novo produto    |
 | PUT    | /products/{id} | Atualiza um produto     |
 | DELETE | /products/{id} | Remove um produto       |
+| GET    | /materials     | Lista todos os materiais|
+| POST   | /materials     | Cria um novo material   |
+| PUT    | /materials/{id}| Atualiza um material    |
+| DELETE | /materials/{id}| Remove um material      |
 
-**Exemplo de payload JSON para criar um produto:**
-
-```json
-{
-  "name": "Produto A",
-  "price": 50.0,
-  "quantity": 10
-}
-```
 
 ## 🧪 Testes
 
