@@ -1,9 +1,5 @@
 # 📦 StockFlow
 
-=======
-
-# 📦 StockFlow
-
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Quarkus](https://img.shields.io/badge/Quarkus-3.30.2-purple)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue)
