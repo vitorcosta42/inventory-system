@@ -221,7 +221,7 @@ npm run test
 
 ```bash
 cd frontend
-npm run cypress:open
+npx cypress open
 ```
 
 > Isso abrirá a interface interativa do Cypress, onde você pode executar testes manualmente ou todos de forma automatizada.
