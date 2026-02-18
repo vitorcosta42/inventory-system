@@ -6,6 +6,7 @@ import {
 } from "../features/products/productsApi";
 import type {
   Product,
+  ProductionProduct,
   ProductMaterial,
 } from "../features/products/productsApi";
 import { useGetMaterialsQuery } from "../features/materials/materialsApi";
@@ -14,11 +15,16 @@ import { toast } from "react-toastify";
 
 interface ProductFormProps {
   product: Product | null;
+  productionProduct: ProductionProduct | null;
   onCancel: () => void;
   onSave: (product: Product | Omit<Product, "id">) => void;
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
+const ProductForm: React.FC<ProductFormProps> = ({
+  product,
+  productionProduct,
+  onCancel,
+}) => {
   const { data: allProducts = [] } = useGetProductsQuery();
   const {
     data: materials = [],
@@ -55,12 +61,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, onCancel }) => {
       setName(product.name);
       setPrice(String(product.price));
       setProductMaterials(product.materials);
+    } else if (productionProduct) {
+      setName(productionProduct.name);
+      setPrice(String(productionProduct.price));
+      setProductMaterials(productionProduct.materials);
     } else {
       setName("");
       setPrice("");
       setProductMaterials([]);
     }
-  }, [product]);
+  }, [product, productionProduct]);
 
   const handleAddMaterial = () => {
     if (!selectedMaterial || quantity <= 0 || !selectedMatObj) return;

@@ -9,11 +9,25 @@ export interface ProductMaterial {
   };
 }
 
+export interface ProductionMaterial {
+  quantity: number;
+  material: {
+    id: string;
+    name?: string;
+  };
+}
+
 export interface Product {
   id: string;
   name: string;
   price: number;
   materials: ProductMaterial[];
+}
+
+export interface ProductionProduct {
+  name: string;
+  price: number;
+  materials: ProductionMaterial[];
 }
 
 export const productsApi = createApi({

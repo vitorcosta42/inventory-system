@@ -40,7 +40,14 @@ describe("ProductForm", () => {
   it("should create a new product with materials", async () => {
     const onCancel = vi.fn();
 
-    render(<ProductForm product={null} onCancel={onCancel} onSave={vi.fn()} />);
+    render(
+      <ProductForm
+        productionProduct={null}
+        product={null}
+        onCancel={onCancel}
+        onSave={vi.fn()}
+      />,
+    );
 
     fireEvent.change(screen.getByTestId("input-product-name"), {
       target: { value: "Produto Teste" },

@@ -1,13 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useGetProductsQuery } from "../features/products/productsApi";
 import { useGetMaterialsQuery } from "../features/materials/materialsApi";
 import type {
   Product,
   ProductMaterial,
 } from "../features/products/productsApi";
-import type { Material } from "../features/materials/types";
-import { useNavigate } from "react-router-dom";
 import { ArrowRightIcon } from "./icons";
+import type { Material } from "../features/materials/types";
+
 interface ProductionResult {
   max: number;
   limitingMaterial: Material | null;
@@ -20,7 +21,12 @@ const ProductionList: React.FC = () => {
     navigate("/products", { state: { product } });
   };
 
-  const { data: products = [] } = useGetProductsQuery();
+  const { data: products = [], isLoading: loadingProducts } =
+    useGetProductsQuery();
+
+  const { data: materials = [], isLoading: loadingMaterials } =
+    useGetMaterialsQuery();
+
   const uniqueProducts = Object.values(
     products.reduce((acc: Record<string, Product>, product: Product) => {
       if (!acc[product.name]) {
@@ -29,8 +35,6 @@ const ProductionList: React.FC = () => {
       return acc;
     }, {}),
   );
-
-  const { data: materials = [] } = useGetMaterialsQuery();
 
   const calculateProduction = (product: Product): ProductionResult => {
     if (!product.materials || product.materials.length === 0) {
@@ -59,6 +63,34 @@ const ProductionList: React.FC = () => {
     };
   };
 
+  // ✅ Loading State
+  if (loadingProducts || loadingMaterials) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-md border">
+        <h2 className="text-xl font-bold mb-6">Produção Possível</h2>
+        <p className="text-gray-500">Carregando dados...</p>
+      </div>
+    );
+  }
+
+  // ✅ Empty State
+  if (uniqueProducts.length === 0) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-md border">
+        <h2 className="text-xl font-bold mb-6">Produção Possível</h2>
+
+        <div className="text-center py-10">
+          <p className="text-lg font-semibold text-gray-600">
+            Nenhum produto cadastrado.
+          </p>
+          <p className="text-sm text-gray-400 mt-2">
+            Cadastre um produto para visualizar a produção possível.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border">
       <h2 className="text-xl font-bold mb-6">Produção Possível</h2>
@@ -74,9 +106,18 @@ const ProductionList: React.FC = () => {
             <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
               {product.name}
               <button
-                onClick={() => handleCreateProduct(product)}
-                className="text-blue-500 hover:text-blue-700 font-bold hover:cursor-pointer "
-                title="Criar produto"
+                onClick={() => max > 0 && handleCreateProduct(product)}
+                disabled={max === 0}
+                className={`font-bold ${
+                  max === 0
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-blue-500 hover:text-blue-700 hover:cursor-pointer"
+                }`}
+                title={
+                  max === 0
+                    ? "Estoque insuficiente para produzir"
+                    : "Criar produto"
+                }
               >
                 <ArrowRightIcon size={24} />
               </button>
@@ -89,7 +130,7 @@ const ProductionList: React.FC = () => {
 
             {limitingMaterial && (
               <p className="text-sm text-red-500 mb-3">
-                ⚠ Material limitante: {limitingMaterial.name}
+                Material limitante: {limitingMaterial.name}
               </p>
             )}
 

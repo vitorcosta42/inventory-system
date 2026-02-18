@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ProductForm, ProductList } from "../components";
-import type { Product } from "../features/products/productsApi";
+import type {
+  Product,
+  ProductionProduct,
+} from "../features/products/productsApi";
 import {
   useGetProductsQuery,
   useAddProductMutation,
@@ -21,7 +24,7 @@ const ProductsPage: React.FC = () => {
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [productionProduct, setProductionProduct] = useState<Omit<
-    Product,
+    ProductionProduct,
     "id"
   > | null>(null);
 
@@ -30,15 +33,22 @@ const ProductsPage: React.FC = () => {
       setProductionProduct({
         name: productFromState.name,
         price: productFromState.price,
-        materials: productFromState.materials,
+        materials: productFromState.materials.map((pm) => ({
+          quantity: pm.quantity,
+          material: {
+            name: pm.material.name,
+            id: pm.material.id,
+          },
+        })),
       });
+
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [productFromState]);
 
   const handleSave = async (product: Product | Omit<Product, "id">) => {
     try {
-      if ("id" in product && editingProduct) {
+      if ("id" in product && editingProduct && !productionProduct) {
         await updateProduct(product as Product).unwrap();
       } else {
         await addProduct(product as Omit<Product, "id">).unwrap();
@@ -74,9 +84,8 @@ const ProductsPage: React.FC = () => {
           <section className="bg-white border border-gray-300  rounded-2xl shadow-sm border">
             <div className="p-6 ">
               <ProductForm
-                product={
-                  editingProduct || (productionProduct as Product | null)
-                }
+                product={editingProduct}
+                productionProduct={productionProduct}
                 onCancel={handleCancel}
                 onSave={handleSave}
               />

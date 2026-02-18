@@ -1,4 +1,3 @@
-// materialsApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Material } from "./types";
 
@@ -7,7 +6,7 @@ export const materialsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8080/api",
     prepareHeaders: (headers) => {
-      headers.set("Content-Type", "application/json"); // ESSENCIAL
+      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
