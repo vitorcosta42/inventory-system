@@ -1,9 +1,8 @@
-<<<<<<< HEAD
-
-#  📦 StockFlow
-=======
 # 📦 StockFlow
->>>>>>> 7f4d3fb (fix: production post fix)
+
+=======
+
+# 📦 StockFlow
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Quarkus](https://img.shields.io/badge/Quarkus-3.30.2-purple)
@@ -17,17 +16,10 @@ Sistema de inventário completo com **backend em Quarkus + PostgreSQL** e **fron
 ## Tecnologias utilizadas
 
 - **Backend:** Quarkus, Java 17
-<<<<<<< HEAD
-- **Frontend:** React, Redux, Tailwind CSS  
-- **Banco de dados:** PostgreSQL 15
-- **Docker & Docker Compose** para orquestração de containers  
-- **Scripts auxiliares:** `wait-for-it.sh` para sincronizar backend com o banco de dados  
-=======
 - **Frontend:** React, Redux, Tailwind CSS
 - **Banco de dados:** PostgreSQL 15
 - **Docker & Docker Compose** para orquestração de containers
 - **Scripts auxiliares:** `wait-for-it.sh` para sincronizar backend com o banco de dados
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ---
 
@@ -35,17 +27,10 @@ Sistema de inventário completo com **backend em Quarkus + PostgreSQL** e **fron
 
 Antes de começar, certifique-se de ter instalado:
 
-<<<<<<< HEAD
-- [Docker](https://docs.docker.com/get-docker/)  
-- [Docker Compose](https://docs.docker.com/compose/install/)  
-- [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (para rodar localmente sem Docker)  
-- [Node.js & npm](https://nodejs.org/) (para rodar o frontend localmente)  
-=======
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (para rodar localmente sem Docker)
 - [Node.js & npm](https://nodejs.org/) (para rodar o frontend localmente)
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ---
 
@@ -65,11 +50,7 @@ inventory-system/
 │   └── package.json
 └── docker-compose.yml # Orquestração de containers
 
-<<<<<<< HEAD
-````
-=======
 ```
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ---
 
@@ -80,31 +61,28 @@ inventory-system/
 **Build dos containers:**
 
 ```bash
-docker-compose down -v
-docker-compose build
-````
+docker compose down -v
+docker compose build
+```
 
 **Subir os containers:**
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
-<<<<<<< HEAD
-=======
 **Subir os containers:**
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
->>>>>>> 7f4d3fb (fix: production post fix)
 > O backend espera o PostgreSQL subir usando `wait-for-it.sh`.
 
 **Parar os containers:**
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ---
@@ -131,13 +109,8 @@ npm run dev
 
 ## Acessando a aplicação
 
-<<<<<<< HEAD
-* **Frontend:** [http://localhost:5173](http://localhost:5173)
-* **Backend (API):** [http://localhost:8080](http://localhost:8080)
-=======
 - **Frontend:** [http://localhost:5173](http://localhost:5173)
 - **Backend (API):** [http://localhost:8080](http://localhost:8080)
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ---
 
@@ -163,53 +136,32 @@ O backend utiliza o script `wait-for-it.sh` para garantir que o PostgreSQL estej
 
 ## Banco de dados
 
-<<<<<<< HEAD
-* O banco está configurado para **drop-and-create**, apagando e criando tabelas a cada start.
-* CORS habilitado para permitir requisições do frontend ([http://localhost:5173](http://localhost:5173)).
-=======
 - O banco está configurado para **drop-and-create**, apagando e criando tabelas a cada start.
 - CORS habilitado para permitir requisições do frontend ([http://localhost:5173](http://localhost:5173)).
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ---
 
 ## Comandos Docker úteis
 
-<<<<<<< HEAD
-* **Listar containers ativos:**
-=======
 - **Listar containers ativos:**
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ```bash
 docker ps
 ```
 
-<<<<<<< HEAD
-* **Listar todos os containers:**
-=======
 - **Listar todos os containers:**
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ```bash
 docker ps -a
 ```
 
-<<<<<<< HEAD
-* **Remover containers parados:**
-=======
 - **Remover containers parados:**
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ```bash
 docker rm $(docker ps -a -q)
 ```
 
-<<<<<<< HEAD
-* **Remover imagens antigas:**
-=======
 - **Remover imagens antigas:**
->>>>>>> 7f4d3fb (fix: production post fix)
 
 ```bash
 docker rmi <image_id>
@@ -235,58 +187,6 @@ docker rmi <image_id>
   "quantity": 10
 }
 ```
-<<<<<<< HEAD
-
-## 🧪 Testes
-
-### Backend (Quarkus)
-
-O backend possui testes unitários e de integração que podem ser executados com Maven.
-
-**Rodar todos os testes:**
-
-```bash
-cd backend
-mvn test
-````
-
-> Observação: Certifique-se de que o banco de dados de teste esteja configurado corretamente no `application.properties`.
-
----
-
-### Frontend (React)
-
-O frontend utiliza **Vitest** para testes unitários e **Cypress** para testes end-to-end (E2E).
-
-**Rodar testes unitários com Vitest:**
-
-```bash
-cd frontend
-npm install
-npm run test
-```
-
-> Isso executará todos os testes unitários e exibirá o resultado no terminal.
-
-**Rodar testes E2E com Cypress:**
-
-```bash
-cd frontend
-npm run cypress:open
-```
-
-> Isso abrirá a interface interativa do Cypress, onde você pode executar testes manualmente ou todos de forma automatizada.
-
-
-## Observações
-
-* Frontend e backend podem ser rodados **simultaneamente via Docker** ou **separadamente para desenvolvimento local**.
-* Ajuste os endpoints conforme suas necessidades.
-* Projeto feito para um teste técnico.
-
-
-
-=======
 
 ## 🧪 Testes
 
@@ -333,4 +233,3 @@ npm run cypress:open
 - Frontend e backend podem ser rodados **simultaneamente via Docker** ou **separadamente para desenvolvimento local**.
 - Ajuste os endpoints conforme suas necessidades.
 - Projeto feito para um teste técnico.
->>>>>>> 7f4d3fb (fix: production post fix)

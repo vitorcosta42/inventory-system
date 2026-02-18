@@ -49,7 +49,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
     null,
   );
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState<number | "">("");
+
   const selectedMatObj = materials.find(
     (m) => String(m.id) === selectedMaterial,
   );
@@ -73,7 +74,13 @@ const ProductForm: React.FC<ProductFormProps> = ({
   }, [product, productionProduct]);
 
   const handleAddMaterial = () => {
-    if (!selectedMaterial || quantity <= 0 || !selectedMatObj) return;
+    if (
+      !selectedMaterial ||
+      quantity === "" ||
+      quantity <= 0 ||
+      !selectedMatObj
+    )
+      return;
 
     const existingIndex = productMaterials.findIndex(
       (m) => String(m.material.id) === String(selectedMaterial),
@@ -98,7 +105,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
     setEditingMaterialId(null);
     setSelectedMaterial(null);
-    setQuantity(0);
+    setQuantity("");
   };
 
   const handleCancel = () => {
@@ -106,10 +113,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
     setPrice("");
     setProductMaterials([]);
     setSelectedMaterial("");
-    setQuantity(0);
+    setQuantity("");
 
     setEditingMaterialId(null);
-    setQuantity(0);
+    setQuantity("");
 
     onCancel();
   };
@@ -224,7 +231,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       setPrice("");
       setProductMaterials([]);
       setSelectedMaterial("");
-      setQuantity(0);
+      setQuantity("");
 
       onCancel();
     } catch (err) {
@@ -277,7 +284,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
               }
               data-cy="select-material"
               data-testid="select-material"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md max-sm:w-full"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md max-sm:w-full hover:cursor-pointer"
             >
               <option value="">Selecione</option>
               {isLoading ? (
@@ -297,11 +304,22 @@ const ProductForm: React.FC<ProductFormProps> = ({
               max={maxQuantity}
               value={quantity}
               onChange={(e) => {
-                let val = Number(e.target.value);
+                const value = e.target.value;
+
+                if (value === "") {
+                  setQuantity("");
+                  return;
+                }
+
+                let val = Number(value);
+
+                if (val < 0) val = 0;
                 if (maxQuantity !== undefined && val > maxQuantity)
                   val = maxQuantity;
+
                 setQuantity(val);
               }}
+              placeholder="Qtd."
               disabled={!selectedMaterial}
               data-cy="input-material-quantity"
               data-testid="input-material-quantity"
